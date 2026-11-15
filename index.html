@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Osui! - osu! chạy trên trình duyệt</title>
+<meta name="description" content="Osui! là phiên bản web của osu!, chạy ngay trên trình duyệt. Hỗ trợ .osz, .osk và mania 4K.">
+<link rel="icon" href="assets/logo.png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#2a1f55">
+<style>
+:root{--bg:#1c1438;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--pink:#ff4f9a;--tx:#f4f0ff;--dim:rgba(244,240,255,.68);color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--tx);background:radial-gradient(1200px 600px at 50% -10%,#4a3590 0,transparent 60%),var(--bg);min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);line-height:1.6}
+.w{max-width:720px;margin:0 auto;padding:40px 20px 56px}
+.hero{text-align:center}
+.hero img{width:min(260px,62vw);height:auto;filter:drop-shadow(0 12px 30px rgba(255,47,142,.35))}
+h1{font-size:clamp(28px,6vw,40px);margin:18px 0 8px}
+.sub{color:var(--dim);font-size:17px;margin:0 auto;max-width:520px}.sub b{color:var(--tx)}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:28px 0 8px}
+.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:17px;padding:14px 26px;border-radius:14px;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:transform .15s,filter .15s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.97)}.btn:hover{filter:brightness(1.1)}
+.btn.p{background:linear-gradient(135deg,#ff5a5f,#fa5a9b);color:#fff;box-shadow:0 10px 26px rgba(250,90,155,.38)}
+.btn.s{background:var(--card);color:var(--tx);border:1px solid var(--line)}
+.btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn svg.f{fill:currentColor;stroke:none}
+section{margin-top:34px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 22px 18px}
+h2{font-size:20px;margin:0 0 10px}
+ul{margin:0;padding-left:20px}li{margin:6px 0}
+code{background:rgba(255,255,255,.1);padding:1px 7px;border-radius:6px;font-size:.92em}
+.note li{color:var(--dim)}.note b{color:var(--tx)}
+footer{text-align:center;color:var(--dim);font-size:13px;margin-top:30px}
+#m{position:fixed;inset:0;background:rgba(10,6,24,.78);display:none;align-items:center;justify-content:center;padding:20px;z-index:10;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#m.on{display:flex}
+#m .b{background:#2a1f55;border:1px solid var(--line);border-radius:20px;max-width:440px;width:100%;padding:24px;max-height:90vh;overflow:auto}
+#m h3{margin:0 0 12px;font-size:20px}
+#m ol{padding-left:22px;margin:0 0 18px}#m li{margin:9px 0}
+#m .row{display:flex;gap:10px;flex-wrap:wrap}#m .row .btn{flex:1;justify-content:center;padding:12px 16px;font-size:16px}
+.tab{display:flex;gap:6px;margin-bottom:14px}.tab button{flex:1;padding:8px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--dim);font:inherit;font-weight:600;cursor:pointer}.tab button.on{background:var(--pink);color:#fff;border-color:var(--pink)}
+.pn{display:none}.pn.on{display:block}
+</style></head><body>
+<div class="w">
+ <div class="hero">
+  <img src="assets/logo.png" alt="Osui!">
+  <h1>Osui!</h1>
+  <p class="sub"><b>Osui!</b> là một phiên bản web của osu!, chạy ngay trên trình duyệt.</p>
+  <div class="cta">
+   <a class="btn p" id="play" href="#">
+    <svg class="f" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>Chơi trực tiếp</a>
+   <button class="btn s" id="add" type="button">
+    <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/></svg>Thêm vào màn hình chính</button>
+   <a class="btn s" href="rank.html#top">Bảng xếp hạng</a>
+   <a class="btn s" href="rank.html#login">Đăng nhập / Đăng ký</a>
+  </div>
+ </div>
+
+ <section>
+  <h2>Giới thiệu</h2>
+  <p style="margin:0">Game hỗ trợ file <code>.osz</code> (beatmap) và <code>.osk</code> (skin) cho những người thích dùng skin và beatmap riêng của mình. Ngoài ra, Osui! bổ sung thêm <b>mania 4K</b> cho những người chơi muốn chơi mania.</p>
+ </section>
+
+ <section>
+  <h2>Tính năng</h2>
+  <ul>
+   <li>Chơi beatmap từ file <code>.osz</code></li>
+   <li>Dùng skin từ file <code>.osk</code></li>
+   <li>Chế độ osu! thường</li>
+   <li>Chế độ <b>mania 4K</b></li>
+   <li>Nhạc <code>.ogg</code> chạy được cả trên Safari/iPhone (có bộ giải mã Ogg Vorbis dự phòng trong <code>vorbis.js</code>)</li>
+   <li>Hỗ trợ tiếng Việt và tiếng Anh (đổi trong phần Cài đặt)</li>
+   <li>Tài khoản (xác minh bằng email), bảng xếp hạng từng bài và <b>Top 50</b> trên web, hồ sơ có kỷ lục, PP và lịch sử chơi</li>
+  </ul>
+ </section>
+
+ <section class="note">
+  <h2>Lưu ý</h2>
+  <ul>
+   <li>Osui! <b>không hỗ trợ</b> các chế độ <b>taiko</b> và <b>catch</b>.</li>
+   <li>Osui! <b>không hỗ trợ</b> các <b>mod của phiên bản lazer</b>.</li>
+  </ul>
+ </section>
+
+ <div class="cta" style="margin-top:34px">
+  <a class="btn p" id="play2" href="#"><svg class="f" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>Chơi trực tiếp</a>
+ </div>
+ <footer>Osui! · chạy hoàn toàn trên trình duyệt của bạn</footer>
+</div>
+
+<div id="m" role="dialog" aria-modal="true"><div class="b">
+ <h3>Thêm game vào màn hình chính</h3>
+ <div class="tab"><button class="on" data-t="i">iPhone / iPad</button><button data-t="a">Android</button></div>
+ <div class="pn on" id="pi"><ol>
+  <li>Bấm <b>Mở game</b> bên dưới, game sẽ mở bằng <b>Safari</b>.</li>
+  <li>Bấm nút <b>Chia sẻ</b> (ô vuông có mũi tên) ở thanh dưới Safari.</li>
+  <li>Kéo xuống và chọn <b>Thêm vào MH chính</b>, rồi bấm <b>Thêm</b>.</li>
+ </ol></div>
+ <div class="pn" id="pa"><ol>
+  <li>Bấm <b>Mở game</b> bên dưới, game sẽ mở bằng <b>Chrome</b>.</li>
+  <li>Bấm nút <b>⋮</b> ở góc trên bên phải.</li>
+  <li>Chọn <b>Thêm vào màn hình chính</b> (hoặc <b>Cài đặt ứng dụng</b>), rồi xác nhận.</li>
+ </ol></div>
+ <div class="row"><a class="btn p" id="open" href="#">Mở game</a><button class="btn s" id="close" type="button">Đóng</button></div>
+</div></div>
+
+<script>
+// >>> ĐỔI LINK NÀY thành link GitHub Pages của game <<<
+var GAME_URL='https://nhatminh6789.github.io/Osui/';
+
+var $=function(i){return document.getElementById(i)};
+$('play').href=$('play2').href=GAME_URL;           // Chơi trực tiếp -> đẩy về game
+$('open').href=GAME_URL+(GAME_URL.indexOf('#')<0?'#install':'');
+var m=$('m'),ua=navigator.userAgent||'',ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+function tab(t){document.querySelectorAll('.tab button').forEach(function(b){b.classList.toggle('on',b.dataset.t===t)});$('pi').classList.toggle('on',t==='i');$('pa').classList.toggle('on',t==='a')}
+document.querySelectorAll('.tab button').forEach(function(b){b.onclick=function(){tab(b.dataset.t)}});
+$('add').onclick=function(){tab(ios?'i':/Android/i.test(ua)?'a':'i');m.classList.add('on')};
+$('close').onclick=function(){m.classList.remove('on')};
+m.onclick=function(e){if(e.target===m)m.classList.remove('on')};
+</script>
+</body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bảng xếp hạng - Osui!</title>
+<link rel="icon" href="assets/logo.png"><meta name="theme-color" content="#2a1f55">
+<style>
+:root{--bg:#1c1438;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--pink:#ff4f9a;--tx:#f4f0ff;--dim:rgba(244,240,255,.68);color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--tx);background:radial-gradient(1200px 600px at 50% -10%,#4a3590 0,transparent 60%),var(--bg);min-height:100vh;line-height:1.5;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+a{color:inherit}
+.w{max-width:860px;margin:0 auto;padding:16px 16px 56px}
+nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 0 16px}
+nav .lg{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;text-decoration:none;margin-right:auto}nav .lg img{width:34px;height:34px}
+.btn{appearance:none;border:1px solid var(--line);cursor:pointer;font:inherit;font-weight:700;font-size:14px;padding:9px 16px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;background:var(--card);color:var(--tx)}
+.btn.p{background:linear-gradient(135deg,#ff5a5f,#fa5a9b);border:0;color:#fff}.btn:hover{filter:brightness(1.12)}.btn[disabled]{opacity:.5}
+.tab{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}.tab button{padding:8px 16px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--dim);font:inherit;font-weight:600;cursor:pointer}.tab button.on{background:var(--pink);color:#fff;border-color:var(--pink)}
+section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+h1{font-size:26px;margin:0 0 14px}h2{font-size:18px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;font-size:14px}th{color:var(--dim);font-weight:600;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.07);vertical-align:middle}
+tr.cl{cursor:pointer}tr.cl:hover td{background:rgba(255,255,255,.05)}
+.num{text-align:right;font-variant-numeric:tabular-nums}.rk1{color:#ffd84d;font-weight:800}.rk2{color:#d6dbe6;font-weight:800}.rk3{color:#e0a070;font-weight:800}
+.sc{overflow-x:auto}.dim{color:var(--dim)}.mod{display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border-radius:6px;background:rgba(255,255,255,.14);margin-right:3px}
+.rkc{font-weight:800}.rkc.S,.rkc.SS{color:#ffd84d}.rkc.A{color:#7ddc4a}.rkc.B{color:#4aa8ff}.rkc.C{color:#c77dff}.rkc.D{color:#ff5a5a}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}.stat{background:rgba(0,0,0,.2);border-radius:14px;padding:12px}.stat small{color:var(--dim);display:block}.stat b{font-size:22px}
+form{max-width:380px;margin:0 auto}input{width:100%;padding:12px;margin:6px 0;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.28);color:var(--tx);font:inherit}
+.msg{margin:10px 0;font-size:14px}.msg.er{color:#ff9a9a}.msg.ok{color:#8f6}
+.ti{font-weight:700}.ar{color:var(--dim);font-size:12px}
+@media(max-width:560px){.hm{display:none}td,th{padding:8px 5px}}
+</style></head><body>
+<div class="w">
+<nav><a class="lg" href="index.html"><img src="assets/logo.png" alt="">Osui!</a>
+<a class="btn" href="#top">Top 50</a><span id="nu"></span></nav>
+<main id="app"><section>Đang tải…</section></main>
+</div>
+<script src="firebase-config.js"></script>
+<script type="module">
+const CFG=window.OSUI_FIREBASE||{},CDN='https://www.gstatic.com/firebasejs/10.14.1/';
+const $=id=>document.getElementById(id),app=$('app');
+const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ready=!!(CFG.apiKey&&CFG.projectId&&!/^YOUR_/.test(CFG.apiKey));
+if(!ready){app.innerHTML='<section><h1>Chưa cấu hình</h1><p class="dim">Hãy điền thông tin Firebase vào <code>firebase-config.js</code> (xem <code>firebase/SETUP.md</code> trong thư mục game).</p></section>'}
+else{
+const[{initializeApp},au,fs]=await Promise.all([import(CDN+'firebase-app.js'),import(CDN+'firebase-auth.js'),import(CDN+'firebase-firestore.js')]);
+const A=au.getAuth(initializeApp(CFG)),D=fs.getFirestore(A.app);try{A.languageCode='vi'}catch(e){}
+const NAME_RE=/^[A-Za-z0-9_.\-]{3,16}$/;
+const EM={'auth/email-already-in-use':'Email này đã được đăng ký','auth/invalid-email':'Email không hợp lệ','auth/weak-password':'Mật khẩu quá yếu (tối thiểu 6 ký tự)','auth/wrong-password':'Sai email hoặc mật khẩu','auth/invalid-credential':'Sai email hoặc mật khẩu','auth/user-not-found':'Sai email hoặc mật khẩu','auth/too-many-requests':'Thử quá nhiều lần, hãy đợi một lúc','auth/network-request-failed':'Không có mạng'};
+const emsg=e=>EM[e&&e.code]||(e&&e.message)||'Có lỗi xảy ra';
+let CU=null,PROF=null,ready1=false;
+const num=(x,d=0)=>Number(x||0).toLocaleString('vi-VN',{minimumFractionDigits:d,maximumFractionDigits:d});
+const ago=t=>{const d=new Date(t);return d.toLocaleDateString('vi-VN')+' '+d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})};
+const mods=a=>(a&&a.length?a.map(m=>'<span class="mod">'+esc(m)+'</span>').join(''):'<span class="dim">—</span>');
+const mapName=r=>'<div class="ti">'+esc(r.title)+(r.cv?' <span class="mod">conv</span>':'')+'</div><div class="ar">'+esc(r.artist)+' · ['+esc(r.ver)+'] · '+num(r.sr,2)+'★</div>';
+async function loadProf(){PROF=null;if(!CU)return;try{const s=await fs.getDoc(fs.doc(D,'users',CU.uid));PROF=s.exists()?s.data():null}catch(e){}}
+function nav(){$('nu').innerHTML=CU?(PROF?'<a class="btn" href="#me">'+esc(PROF.name)+'</a> ':'')+'<button class="btn" id="lo">Đăng xuất</button>':'<a class="btn p" href="#login">Đăng nhập / Đăng ký</a>';if(CU)$('lo').onclick=()=>au.signOut(A)}
+const sec=h=>{app.innerHTML='<section>'+h+'</section>'};
+const ERR=e=>e&&e.code==='failed-precondition'?'Thiếu index Firestore (xem firebase/SETUP.md, bước 3).':'Không tải được dữ liệu. '+(e&&e.message?esc(e.message):'');
+
+// ---- Top 50 ----
+async function top(mode){mode=mode==='mania'?'mania':'std';sec('<h1>Top 50 người chơi</h1><div class="tab"><button data-m="std" class="'+(mode==='std'?'on':'')+'">osu!</button><button data-m="mania" class="'+(mode==='mania'?'on':'')+'">mania 4K</button></div><div id="tb" class="sc">Đang tải…</div><p class="dim" style="font-size:12px;margin-bottom:0">PP là công thức riêng của Osui!, không phải PP chính thức của osu!. Tổng PP = tổng PP các kỷ lục tốt nhất, kỷ lục thứ i nhân 0.95^i.</p>');
+ app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{location.hash='#top/'+b.dataset.m});
+ try{const f='pp_'+mode,s=await fs.getDocs(fs.query(fs.collection(D,'users'),fs.orderBy(f,'desc'),fs.limit(50))),a=[];s.forEach(d=>{const x=d.data();if(x[f]>0)a.push({id:d.id,...x})});
+  $('tb').innerHTML=a.length?'<table><tr><th>#</th><th>Người chơi</th><th class="num">PP</th><th class="num hm">Lần chơi</th></tr>'+a.map((u,i)=>'<tr class="cl" data-u="'+u.id+'"><td class="'+(i<3?'rk'+(i+1):'')+'">'+(i+1)+'</td><td>'+esc(u.name)+'</td><td class="num"><b>'+num(u[f],2)+'</b></td><td class="num hm">'+num(u.plays)+'</td></tr>').join('')+'</table>':'<p class="dim">Chưa có ai trên bảng xếp hạng.</p>';
+  $('tb').querySelectorAll('[data-u]').forEach(r=>r.onclick=()=>{location.hash='#u/'+r.dataset.u})}
+ catch(e){$('tb').innerHTML='<p class="msg er">'+ERR(e)+'</p>'}}
+
+// ---- Hồ sơ ----
+async function profile(uid,mode,tabN){mode=mode==='mania'?'mania':'std';tabN=tabN==='h'?'h':'r';
+ sec('Đang tải…');let u;try{const s=await fs.getDoc(fs.doc(D,'users',uid));if(!s.exists())return sec('<h1>Không tìm thấy người chơi</h1>');u=s.data()}catch(e){return sec('<p class="msg er">'+ERR(e)+'</p>')}
+ const base='#'+(CU&&uid===CU.uid?'me':'u/'+uid),m=mode==='mania'?1:0;
+ sec('<h1>'+esc(u.name)+(CU&&uid===CU.uid&&!CU.emailVerified?' <span class="mod" style="font-size:12px">chưa xác minh email</span>':'')+'</h1><div class="stats"><div class="stat"><small>PP osu!</small><b>'+num(u.pp_std,2)+'</b></div><div class="stat"><small>PP mania 4K</small><b>'+num(u.pp_mania,2)+'</b></div><div class="stat"><small>Số lần chơi</small><b>'+num(u.plays)+'</b></div></div>'
+  +'<div class="tab"><button data-m="std" class="'+(mode==='std'?'on':'')+'">osu!</button><button data-m="mania" class="'+(mode==='mania'?'on':'')+'">mania 4K</button><span style="flex:1"></span><button data-t="r" class="'+(tabN==='r'?'on':'')+'">Kỷ lục</button><button data-t="h" class="'+(tabN==='h'?'on':'')+'">Lịch sử chơi</button></div><div id="pb" class="sc">Đang tải…</div>');
+ const go=(mo,t)=>{location.hash=base+'/'+mo+'/'+t};
+ app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>go(b.dataset.m,tabN));app.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>go(mode,b.dataset.t));
+ try{
+  if(tabN==='r'){const s=await fs.getDocs(fs.query(fs.collection(D,'scores'),fs.where('uid','==',uid),fs.where('mode','==',m),fs.orderBy('pp','desc'),fs.limit(100))),a=[];s.forEach(d=>a.push(d.data()));
+   $('pb').innerHTML=a.length?'<table><tr><th>#</th><th>Map</th><th class="num">Điểm</th><th class="num hm">Chính xác</th><th class="hm">Hạng</th><th class="hm">Mod</th><th class="num">PP</th><th class="num hm">Tính vào tổng</th></tr>'+a.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+mapName(r)+'<div class="ar">'+ago(r.date)+'</div></td><td class="num">'+num(r.score)+'</td><td class="num hm">'+num(r.acc*100,2)+'%</td><td class="hm"><span class="rkc '+esc(r.rk)+'">'+esc(r.rk)+'</span></td><td class="hm">'+mods(r.mods)+'</td><td class="num"><b>'+num(r.pp,2)+'</b></td><td class="num hm dim">'+num(r.pp*Math.pow(.95,i),2)+'</td></tr>').join('')+'</table>':'<p class="dim">Chưa có kỷ lục nào ở chế độ này.</p>'}
+  else{const s=await fs.getDocs(fs.query(fs.collection(D,'plays'),fs.where('uid','==',uid),fs.orderBy('date','desc'),fs.limit(100))),a=[];s.forEach(d=>{const x=d.data();if(x.mode===m)a.push(x)});
+   $('pb').innerHTML=a.length?'<table><tr><th>Thời gian</th><th>Map</th><th class="num">Điểm</th><th class="num hm">Chính xác</th><th class="hm">Hạng</th><th class="hm">Mod</th><th class="num">PP</th></tr>'+a.map(r=>'<tr><td class="dim" style="white-space:nowrap">'+ago(r.date)+'</td><td>'+mapName(r)+'</td><td class="num">'+num(r.score)+'</td><td class="num hm">'+num(r.acc*100,2)+'%</td><td class="hm"><span class="rkc '+esc(r.rk)+'">'+esc(r.rk)+'</span></td><td class="hm">'+mods(r.mods)+'</td><td class="num"><b>'+num(r.pp,2)+'</b></td></tr>').join('')+'</table>':'<p class="dim">Chưa có lượt chơi nào ở chế độ này.</p>'}}
+ catch(e){$('pb').innerHTML='<p class="msg er">'+ERR(e)+'</p>'}}
+
+// ---- Đăng nhập / đăng ký ----
+function authView(tab){tab=tab==='up'?'up':'in';
+ if(CU&&!CU.emailVerified)return verifyView();if(CU)return(location.hash='#me');
+ sec('<h1>Tài khoản</h1><div class="tab" style="justify-content:center"><button data-t="in" class="'+(tab==='in'?'on':'')+'">Đăng nhập</button><button data-t="up" class="'+(tab==='up'?'on':'')+'">Đăng ký</button></div><form id="fm"><input id="e" type="email" autocomplete="email" placeholder="Email'+(CFG.onlyGmail?' (@gmail.com)':'')+'" required>'+(tab==='up'?'<input id="n" autocomplete="username" maxlength="16" placeholder="Tên người chơi (3–16 ký tự: chữ, số, _ . -)" required>':'')+'<input id="p" type="password" autocomplete="'+(tab==='up'?'new-password':'current-password')+'" placeholder="Mật khẩu" required>'+(tab==='up'?'<input id="q" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu" required>':'')+'<div class="msg" id="mg"></div><button class="btn p" style="width:100%;justify-content:center" id="go">'+(tab==='in'?'Đăng nhập':'Tạo tài khoản')+'</button>'+(tab==='in'?'<p style="text-align:center"><a href="#" id="fg" class="dim">Quên mật khẩu?</a></p>':'<p class="dim" style="font-size:13px">Sau khi đăng ký, một email xác minh sẽ được gửi tới hộp thư của bạn.</p>')+'</form>');
+ app.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{location.hash='#login/'+b.dataset.t});
+ const mg=(t,ok)=>{$('mg').className='msg '+(ok?'ok':'er');$('mg').textContent=t};
+ if($('fg'))$('fg').onclick=async ev=>{ev.preventDefault();const e=$('e').value.trim();if(!e)return mg('Nhập email trước');try{await au.sendPasswordResetEmail(A,e);mg('Đã gửi email đặt lại mật khẩu',1)}catch(x){mg(emsg(x))}};
+ $('fm').onsubmit=async ev=>{ev.preventDefault();$('go').disabled=true;mg('…',1);const e=$('e').value.trim(),p=$('p').value;
+  try{if(tab==='in'){await au.signInWithEmailAndPassword(A,e,p)}
+   else{const n=$('n').value.trim(),key=n.toLowerCase();if(CFG.onlyGmail&&!/@gmail\.com$/i.test(e))throw new Error('Chỉ nhận địa chỉ @gmail.com');if(!NAME_RE.test(n))throw new Error('Tên 3–16 ký tự: chữ, số, _ . -');if(p.length<6)throw new Error('Mật khẩu tối thiểu 6 ký tự');if(p!==$('q').value)throw new Error('Mật khẩu nhập lại không khớp');
+    if((await fs.getDoc(fs.doc(D,'usernames',key))).exists())throw new Error('Tên này đã có người dùng');
+    let cr;try{cr=await au.createUserWithEmailAndPassword(A,e,p)}catch(x){throw new Error(emsg(x))}
+    try{const b=fs.writeBatch(D);b.set(fs.doc(D,'usernames',key),{uid:cr.user.uid});b.set(fs.doc(D,'users',cr.user.uid),{name:n,nameLower:key,pp_std:0,pp_mania:0,plays:0,created:Date.now()});await b.commit()}catch(x){try{await au.deleteUser(cr.user)}catch(_){}throw new Error('Không tạo được hồ sơ (tên có thể vừa bị người khác lấy)')}
+    try{await au.sendEmailVerification(cr.user)}catch(x){}}}
+  catch(x){mg(emsg(x));$('go').disabled=false}}}
+function verifyView(){sec('<h1>Xác minh email</h1><p>Chúng mình đã gửi một email xác minh tới <b>'+esc(CU.email)+'</b>. Hãy mở hộp thư (Gmail), bấm vào liên kết xác minh (kiểm tra cả thư rác), rồi bấm nút bên dưới.</p><div class="msg" id="mg"></div><p><button class="btn p" id="ok">Tôi đã xác minh</button> <button class="btn" id="rs">Gửi lại email</button></p>');
+ const mg=(t,ok)=>{$('mg').className='msg '+(ok?'ok':'er');$('mg').textContent=t};
+ $('ok').onclick=async()=>{try{await CU.reload();await CU.getIdToken(true);CU=A.currentUser;if(CU.emailVerified){await loadProf();nav();location.hash='#me';route()}else mg('Chưa thấy xác minh. Hãy bấm liên kết trong email rồi thử lại.')}catch(x){mg(emsg(x))}};
+ $('rs').onclick=async()=>{try{await au.sendEmailVerification(CU);mg('Đã gửi lại email xác minh',1)}catch(x){mg(emsg(x))}}}
+
+function route(){if(!ready1)return;const p=(location.hash||'#top').slice(1).split('/');
+ if(p[0]==='top')return top(p[1]);
+ if(p[0]==='login')return authView(p[1]);
+ if(p[0]==='u'&&p[1])return profile(p[1],p[2],p[3]);
+ if(p[0]==='me'){if(!CU){location.hash='#login';return}if(!CU.emailVerified)return verifyView();return profile(CU.uid,p[1],p[2])}
+ top('std')}
+addEventListener('hashchange',route);
+au.onAuthStateChanged(A,async u=>{CU=u;await loadProf();ready1=true;nav();route()});
+}
+</script></body></html>
