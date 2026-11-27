@@ -1,0 +1,21 @@
+/* Nút 3 gạch + menu trượt, dùng chung cho mọi trang */
+.mb{appearance:none;cursor:pointer;flex:none;position:relative;width:42px;height:42px;padding:0;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--tx);display:inline-flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
+.mb:hover{filter:brightness(1.15)}
+.mb svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.mb .dot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:var(--pink);display:none}
+html.mopen{overflow:hidden}
+#mo{position:fixed;inset:0;background:rgba(10,6,24,.62);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
+#mo.on{opacity:1;pointer-events:auto}
+#md{position:fixed;top:0;left:0;bottom:0;width:min(300px,82vw);background:#2a1f55;border-right:1px solid var(--line);box-shadow:8px 0 40px rgba(0,0,0,.45);transform:translateX(-104%);transition:transform .22s ease;z-index:51;padding:calc(16px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));display:flex;flex-direction:column;gap:4px;overflow:auto;visibility:hidden}
+#md.on{transform:none;visibility:visible}
+#md .mh{display:flex;align-items:center;gap:10px;padding:2px 4px 14px;font-size:20px}
+#md .mh img{width:34px;height:34px}
+#md .mh b{flex:1}
+#md .mx{appearance:none;border:0;background:transparent;color:var(--dim);font:inherit;font-size:20px;line-height:1;width:36px;height:36px;border-radius:10px;cursor:pointer}
+#md .mx:hover{background:rgba(255,255,255,.08)}
+#md .mi{appearance:none;border:0;background:transparent;color:var(--tx);font:inherit;font-weight:700;font-size:16px;text-align:left;text-decoration:none;display:flex;align-items:center;gap:8px;width:100%;padding:13px 14px;border-radius:12px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#md .mi:hover{background:rgba(255,255,255,.08)}
+#md .mi.on{background:rgba(255,79,154,.2);color:#ffb3d3}
+#md .mi.dg{color:#ff9a9a}
+#md .ms{height:1px;background:var(--line);margin:8px 6px}
+#md .bdg{display:inline-block;min-width:18px;padding:0 6px;border-radius:9px;background:var(--pink);color:#fff;font-size:12px;font-weight:800;line-height:18px;text-align:center}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi" data-title="loginTitle" data-page="login"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tài khoản - Osui!</title>
+<link rel="icon" href="assets/logo.png"><meta name="theme-color" content="#2a1f55">
+<link rel="stylesheet" href="menu.css">
+<style>
+:root{--bg:#1c1438;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--pink:#ff4f9a;--tx:#f4f0ff;--dim:rgba(244,240,255,.68);color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--tx);background:radial-gradient(1200px 600px at 50% -10%,#4a3590 0,transparent 60%),var(--bg);min-height:100vh;line-height:1.5;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+a{color:inherit}
+.w{max-width:860px;margin:0 auto;padding:16px 16px 56px}
+nav{display:flex;align-items:center;gap:12px;padding:6px 0 16px}
+nav .lg{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;text-decoration:none;margin-right:auto}nav .lg img{width:34px;height:34px}
+.btn{appearance:none;border:1px solid var(--line);cursor:pointer;font:inherit;font-weight:700;font-size:14px;padding:9px 16px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;background:var(--card);color:var(--tx)}
+.btn.p{background:linear-gradient(135deg,#ff5a5f,#fa5a9b);border:0;color:#fff}.btn:hover{filter:brightness(1.12)}.btn[disabled]{opacity:.5}
+.tab{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}.tab button{padding:8px 16px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--dim);font:inherit;font-weight:600;cursor:pointer}.tab button.on{background:var(--pink);color:#fff;border-color:var(--pink)}
+section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+h1{font-size:26px;margin:0 0 14px}
+form{max-width:380px;margin:0 auto}input{width:100%;padding:12px;margin:6px 0;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.28);color:var(--tx);font:inherit}
+.msg{margin:10px 0;font-size:14px}.msg.er{color:#ff9a9a}.msg.ok{color:#8f6}.dim{color:var(--dim)}
+.langbtn{appearance:none;cursor:pointer;font:inherit;font-weight:800;font-size:13px;height:42px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--tx)}
+</style></head><body>
+<div class="w">
+<nav><button class="mb" id="mb" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h16M4 17.5h16"/></svg><i class="dot"></i></button>
+<a class="lg" href="index.html"><img src="assets/logo.png" alt="">Osui!</a><button class="langbtn" type="button">EN</button></nav>
+<main id="app"><section data-i="loading">Đang tải…</section></main>
+</div>
+<script src="i18n.js"></script>
+<script src="firebase-config.js"></script>
+<script src="menu.js"></script>
+<script type="module">
+import {S,t,$,esc,NAME_RE,emsg,sec,init,watch,loadProf,notCfg} from './common.js';
+I18N.apply();
+if(!await init({fs:true}).catch(e=>{console.error(e);return false}))notCfg();
+else{
+const {fs,au,A,D}=S;
+// ---- Đăng nhập / đăng ký ----
+function authView(tab){tab=tab==='up'?'up':'in';
+ sec('<h1>'+t('account')+'</h1><div class="tab" style="justify-content:center"><button data-t="in" class="'+(tab==='in'?'on':'')+'">'+t('login')+'</button><button data-t="up" class="'+(tab==='up'?'on':'')+'">'+t('signup')+'</button></div><form id="fm"><input id="e" type="email" autocomplete="email" placeholder="'+esc(t('email')+(S.CFG.onlyGmail?' (@gmail.com)':''))+'" required>'+(tab==='up'?'<input id="n" autocomplete="username" maxlength="16" placeholder="'+esc(t('username'))+'" required>':'')+'<input id="p" type="password" autocomplete="'+(tab==='up'?'new-password':'current-password')+'" placeholder="'+esc(t('password'))+'" required>'+(tab==='up'?'<input id="q" type="password" autocomplete="new-password" placeholder="'+esc(t('password2'))+'" required>':'')+'<div class="msg" id="mg"></div><button class="btn p" style="width:100%;justify-content:center" id="go">'+(tab==='in'?t('login'):t('createAcc'))+'</button>'+(tab==='in'?'<p style="text-align:center"><a href="#" id="fg" class="dim">'+t('forgot')+'</a></p>':'<p class="dim" style="font-size:13px">'+t('signupNote')+'</p>')+'</form>');
+ document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{location.hash='#'+b.dataset.t});
+ const mg=(x,ok)=>{$('mg').className='msg '+(ok?'ok':'er');$('mg').textContent=x};
+ if($('fg'))$('fg').onclick=async ev=>{ev.preventDefault();const e=$('e').value.trim();if(!e)return mg(t('typeEmailFirst'));try{await au.sendPasswordResetEmail(A,e);mg(t('resetSent'),1)}catch(x){mg(emsg(x))}};
+ $('fm').onsubmit=async ev=>{ev.preventDefault();$('go').disabled=true;mg('…',1);const e=$('e').value.trim(),p=$('p').value;
+  try{if(tab==='in'){await au.signInWithEmailAndPassword(A,e,p)}
+   else{const n=$('n').value.trim(),key=n.toLowerCase();if(S.CFG.onlyGmail&&!/@gmail\.com$/i.test(e))throw new Error(t('onlyGmail'));if(!NAME_RE.test(n))throw new Error(t('nameRule'));if(p.length<6)throw new Error(t('pwMin'));if(p!==$('q').value)throw new Error(t('pwMismatch'));
+    if((await fs.getDoc(fs.doc(D,'usernames',key))).exists())throw new Error(t('nameTaken'));
+    let cr;try{cr=await au.createUserWithEmailAndPassword(A,e,p)}catch(x){throw new Error(emsg(x))}
+    try{const b=fs.writeBatch(D);b.set(fs.doc(D,'usernames',key),{uid:cr.user.uid});b.set(fs.doc(D,'users',cr.user.uid),{name:n,nameLower:key,pp_std:0,pp_mania:0,plays:0,created:Date.now()});await b.commit()}catch(x){try{await au.deleteUser(cr.user)}catch(_){}throw new Error(t('profileFail'))}
+    try{await au.sendEmailVerification(cr.user)}catch(x){}}}
+  catch(x){if($('mg')){mg(emsg(x));$('go').disabled=false}}}}
+// ---- Xác minh email ----
+function verifyView(){sec('<h1>'+t('verifyH')+'</h1><p>'+t('verifyP',{email:esc(S.CU.email)})+'</p><div class="msg" id="mg"></div><p><button class="btn p" id="ok">'+t('verified')+'</button> <button class="btn" id="rs">'+t('resend')+'</button></p>');
+ const mg=(x,ok)=>{$('mg').className='msg '+(ok?'ok':'er');$('mg').textContent=x};
+ $('ok').onclick=async()=>{try{await S.CU.reload();await S.CU.getIdToken(true);S.CU=A.currentUser;if(S.CU.emailVerified){location.href='profile.html#me'}else mg(t('notVerified'))}catch(x){mg(emsg(x))}};
+ $('rs').onclick=async()=>{try{await au.sendEmailVerification(S.CU);mg(t('resent'),1)}catch(x){mg(emsg(x))}}}
+function route(){
+ if(S.CU&&S.CU.emailVerified){location.replace('profile.html#me');return} // đã đăng nhập -> sang hồ sơ
+ if(S.CU)return verifyView();
+ authView((location.hash||'#in').slice(1)==='up'?'up':'in')}
+addEventListener('hashchange',route);
+I18N.onChange(route);
+watch(async()=>route());
+}
+</script></body></html>

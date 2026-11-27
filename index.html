@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi" data-title="pageTitle" data-page="home"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Osui! - game nhịp điệu cho iPhone</title>
+<meta name="description" content="Osui! là game nhịp điệu chạy ngay trên Safari của iPhone, có thể chơi offline, hỗ trợ standard và mania 4K.">
+<link rel="icon" href="assets/logo.png"><link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="theme-color" content="#2a1f55">
+<link rel="stylesheet" href="menu.css">
+<style>
+:root{--bg:#1c1438;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--pink:#ff4f9a;--tx:#f4f0ff;--dim:rgba(244,240,255,.68);color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--tx);background:radial-gradient(1200px 600px at 50% -10%,#4a3590 0,transparent 60%),var(--bg);min-height:100vh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);line-height:1.6;position:relative}
+.bar{position:absolute;top:calc(12px + env(safe-area-inset-top));left:calc(14px + env(safe-area-inset-left));right:calc(14px + env(safe-area-inset-right));display:flex;align-items:center;justify-content:space-between;z-index:5}
+.w{max-width:720px;margin:0 auto;padding:68px 20px 56px}
+.hero{text-align:center}
+.hero img{width:min(260px,62vw);height:auto;filter:drop-shadow(0 12px 30px rgba(255,47,142,.35))}
+h1{font-size:clamp(28px,6vw,40px);margin:18px 0 8px;line-height:1.2}
+.sub{color:var(--dim);font-size:17px;margin:0 auto;max-width:520px}.sub b{color:var(--tx)}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:28px 0 8px}
+.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:17px;padding:14px 26px;border-radius:14px;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:transform .15s,filter .15s;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.97)}.btn:hover{filter:brightness(1.1)}
+.btn.p{background:linear-gradient(135deg,#ff5a5f,#fa5a9b);color:#fff;box-shadow:0 10px 26px rgba(250,90,155,.38)}
+.btn.s{background:var(--card);color:var(--tx);border:1px solid var(--line)}
+.btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn svg.f{fill:currentColor;stroke:none}
+section{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 22px 18px}
+h2{font-size:20px;margin:0 0 10px}
+section p{margin:0 0 10px}section p:last-child{margin-bottom:4px}
+code{background:rgba(255,255,255,.1);padding:1px 7px;border-radius:6px;font-size:.92em}
+.note p{color:var(--dim)}
+footer{text-align:center;color:var(--dim);font-size:13px;margin-top:30px}
+#m{position:fixed;inset:0;background:rgba(10,6,24,.78);display:none;align-items:center;justify-content:center;padding:20px;z-index:60;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#m.on{display:flex}
+#m .b{background:#2a1f55;border:1px solid var(--line);border-radius:20px;max-width:440px;width:100%;padding:24px;max-height:90vh;overflow:auto}
+#m h3{margin:0 0 12px;font-size:20px}
+#m ol{padding-left:22px;margin:0 0 18px}#m li{margin:9px 0}
+#m .row{display:flex;gap:10px;flex-wrap:wrap}#m .row .btn{flex:1;justify-content:center;padding:12px 16px;font-size:16px}
+.tab{display:flex;gap:6px;margin-bottom:14px}.tab button{flex:1;padding:8px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--dim);font:inherit;font-weight:600;cursor:pointer}.tab button.on{background:var(--pink);color:#fff;border-color:var(--pink)}
+.pn{display:none}.pn.on{display:block}
+.langbtn{appearance:none;cursor:pointer;font:inherit;font-weight:800;font-size:13px;letter-spacing:.5px;height:42px;padding:0 16px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--tx)}.langbtn:hover{filter:brightness(1.15)}
+</style></head><body>
+<div class="bar">
+ <button class="mb" id="mb" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h16M4 17.5h16"/></svg><i class="dot"></i></button>
+ <button class="langbtn" type="button">EN</button>
+</div>
+<div class="w">
+ <div class="hero">
+  <img src="assets/logo.png" alt="Osui!">
+  <h1 data-i="welcome">Chào mừng bạn đến với osui!</h1>
+  <p class="sub" data-i="sub">Nó được viết tắt cho osu!, tựa game nhịp điệu mà tôi thích, và nó dành cho iPhone.</p>
+  <div class="cta">
+   <a class="btn p" id="play" href="#">
+    <svg class="f" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg><span data-i="playNow">Chơi trực tiếp</span></a>
+   <button class="btn s" id="add" type="button">
+    <svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/></svg><span data-i="addHome">Thêm vào màn hình chính</span></button>
+  </div>
+ </div>
+
+ <section>
+  <h2 data-i="whatH">Osui! là gì?</h2>
+  <p data-i="whatP">Osui! là một game nhịp điệu được phát triển và chạy ngay trên Safari của iPhone. Game cũng có thể chạy offline khi bạn đã thêm vào màn hình chính. Hiện tại game có 2 chế độ chơi là standard và mania 4K.</p>
+ </section>
+
+ <section>
+  <h2 data-i="compatH">Tương thích</h2>
+  <p data-i="compatP">Game tương thích với mọi dòng iPhone. Tất nhiên bạn có thể bật chế độ thấp để có FPS tốt hơn, và có thể chơi tốt trên màn hình cảm ứng. Tôi có hỗ trợ cả bàn phím và chuột Bluetooth.</p>
+ </section>
+
+ <section>
+  <h2 data-i="modesH">Thêm chế độ chơi</h2>
+  <p data-i="modesP">Hiện tại game có thể thêm các chế độ như Touhosu, Sentakki, Hitokori, miễn là bạn có file <code>.dll</code> của chúng.</p>
+ </section>
+
+ <section class="note">
+  <h2 data-i="noteH">Lưu ý</h2>
+  <p data-i="n1">Tựa game này không hỗ trợ các chế độ như taiko, catch. Khi dùng chúng sẽ bị lỗi hiển thị skin, và sẽ có một số lỗi ngớ ngẩn khác.</p>
+  <p data-i="n2">Nếu máy bạn có thể tải osu!lazer, tôi khuyên bạn nên ủng hộ phiên bản osu!lazer của peppy. Dù sao thì osui! cũng chỉ là một bản clone, nên tôi khuyến khích bạn ủng hộ osu! nguyên bản của peppy.</p>
+ </section>
+
+ <div class="cta" style="margin-top:34px">
+  <a class="btn p" id="play2" href="#"><svg class="f" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg><span data-i="playNow">Chơi trực tiếp</span></a>
+ </div>
+ <footer data-i="footer">Osui! · chạy hoàn toàn trên trình duyệt của bạn</footer>
+</div>
+
+<div id="m" role="dialog" aria-modal="true"><div class="b">
+ <h3 data-i="mT">Thêm game vào màn hình chính</h3>
+ <div class="tab"><button class="on" data-t="i">iPhone / iPad</button><button data-t="a">Android</button></div>
+ <div class="pn on" id="pi"><ol>
+  <li data-i="i1">Bấm <b>Mở game</b> bên dưới, game sẽ mở bằng <b>Safari</b>.</li>
+  <li data-i="i2">Bấm nút <b>Chia sẻ</b> (ô vuông có mũi tên) ở thanh dưới Safari.</li>
+  <li data-i="i3">Kéo xuống và chọn <b>Thêm vào MH chính</b>, rồi bấm <b>Thêm</b>.</li>
+ </ol></div>
+ <div class="pn" id="pa"><ol>
+  <li data-i="a1">Bấm <b>Mở game</b> bên dưới, game sẽ mở bằng <b>Chrome</b>.</li>
+  <li data-i="a2">Bấm nút <b>⋮</b> ở góc trên bên phải.</li>
+  <li data-i="a3">Chọn <b>Thêm vào màn hình chính</b> (hoặc <b>Cài đặt ứng dụng</b>), rồi xác nhận.</li>
+ </ol></div>
+ <div class="row"><a class="btn p" id="open" href="#" data-i="openGame">Mở game</a><button class="btn s" id="close" type="button" data-i="close">Đóng</button></div>
+</div></div>
+
+<script src="i18n.js"></script>
+<script src="firebase-config.js"></script>
+<script src="menu.js"></script>
+<script>
+// >>> ĐỔI LINK NÀY thành link GitHub Pages của game <<<
+var GAME_URL='https://nhatminh6789.github.io/Osui/';
+
+var $=function(i){return document.getElementById(i)};
+$('play').href=$('play2').href=GAME_URL;           // Chơi trực tiếp -> đẩy về game
+$('open').href=GAME_URL+(GAME_URL.indexOf('#')<0?'#install':'');
+var m=$('m'),ua=navigator.userAgent||'',ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+function tab(t){document.querySelectorAll('.tab button').forEach(function(b){b.classList.toggle('on',b.dataset.t===t)});$('pi').classList.toggle('on',t==='i');$('pa').classList.toggle('on',t==='a')}
+document.querySelectorAll('.tab button').forEach(function(b){b.onclick=function(){tab(b.dataset.t)}});
+$('add').onclick=function(){tab(ios?'i':/Android/i.test(ua)?'a':'i');m.classList.add('on')};
+$('close').onclick=function(){m.classList.remove('on')};
+m.onclick=function(e){if(e.target===m)m.classList.remove('on')};
+I18N.apply();
+</script>
+<script type="module">
+// Chỉ cần biết đã đăng nhập hay chưa để menu hiện "Đăng xuất" thay cho "Đăng nhập / Đăng ký"
+import {init,watch} from './common.js';
+try{if(await init()){watch(function(){})}}catch(e){console.error(e)}
+</script>
+</body></html>

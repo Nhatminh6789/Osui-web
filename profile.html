@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi" data-title="profTitle" data-page="profile"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hồ sơ - Osui!</title>
+<link rel="icon" href="assets/logo.png"><meta name="theme-color" content="#2a1f55">
+<link rel="stylesheet" href="menu.css">
+<style>
+:root{--bg:#1c1438;--card:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);--pink:#ff4f9a;--tx:#f4f0ff;--dim:rgba(244,240,255,.68);color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--tx);background:radial-gradient(1200px 600px at 50% -10%,#4a3590 0,transparent 60%),var(--bg);min-height:100vh;line-height:1.5;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+a{color:inherit}
+.w{max-width:860px;margin:0 auto;padding:16px 16px 56px}
+nav{display:flex;align-items:center;gap:12px;padding:6px 0 16px}
+nav .lg{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;text-decoration:none;margin-right:auto}nav .lg img{width:34px;height:34px}
+.btn{appearance:none;border:1px solid var(--line);cursor:pointer;font:inherit;font-weight:700;font-size:14px;padding:9px 16px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;background:var(--card);color:var(--tx)}
+.btn.p{background:linear-gradient(135deg,#ff5a5f,#fa5a9b);border:0;color:#fff}.btn:hover{filter:brightness(1.12)}.btn[disabled]{opacity:.5}
+.tab{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}.tab button{padding:8px 16px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--dim);font:inherit;font-weight:600;cursor:pointer}.tab button.on{background:var(--pink);color:#fff;border-color:var(--pink)}
+section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+h1{font-size:26px;margin:0 0 14px}h2{font-size:18px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;font-size:14px}th{color:var(--dim);font-weight:600;text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);white-space:nowrap}td{padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.07);vertical-align:middle}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+.sc{overflow-x:auto}.dim{color:var(--dim)}.mod{display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border-radius:6px;background:rgba(255,255,255,.14);margin-right:3px}
+.rkc{font-weight:800}.rkc.S,.rkc.SS{color:#ffd84d}.rkc.A{color:#7ddc4a}.rkc.B{color:#4aa8ff}.rkc.C{color:#c77dff}.rkc.D{color:#ff5a5a}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}.stat{background:rgba(0,0,0,.2);border-radius:14px;padding:12px}.stat small{color:var(--dim);display:block}.stat b{font-size:22px}
+input{width:100%;padding:12px;margin:6px 0;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.28);color:var(--tx);font:inherit}
+.msg{margin:10px 0;font-size:14px}.msg.er{color:#ff9a9a}.msg.ok{color:#8f6}
+.ti{font-weight:700}.ar{color:var(--dim);font-size:12px}
+.av{display:inline-flex;align-items:center;justify-content:center;flex:none;width:var(--s,32px);height:var(--s,32px);border-radius:50%;background:linear-gradient(135deg,#ff5a5f,#fa5a9b) center/cover no-repeat;color:#fff;font-weight:800;font-size:calc(var(--s,32px)*.45);vertical-align:middle;overflow:hidden;font-style:normal}
+.phead{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:16px}.phead h1{margin:0}.phead .grow{flex:1;min-width:150px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn.sm{padding:6px 12px;font-size:13px;border-radius:10px}.btn.dg{color:#ff9a9a}
+.langbtn{appearance:none;cursor:pointer;font:inherit;font-weight:800;font-size:13px;height:42px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--tx)}
+.bdg{display:inline-block;min-width:18px;padding:0 6px;margin-left:6px;border-radius:9px;background:var(--pink);color:#fff;font-size:12px;font-weight:800;line-height:18px;text-align:center}
+.row2{display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid rgba(255,255,255,.07)}.row2:last-child{border:0}.row2 .nm{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.row2 .nm small{display:block;color:var(--dim);font-weight:400;font-size:12px}
+.fgrp{margin-top:20px}.fgrp h2{margin-bottom:4px}
+.addf{display:flex;gap:8px;max-width:420px}.addf input{margin:0}
+.hint{color:var(--dim);font-size:12px;margin:8px 0 0}
+input[type=file]{display:none}
+/* biểu đồ cột lịch sử ngày chơi */
+.cw{margin-bottom:16px;background:rgba(0,0,0,.2);border-radius:14px;padding:14px}
+.chh{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}.chh h2{margin:0}
+.rng{display:flex;gap:6px}.rng button{padding:5px 12px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--dim);font:inherit;font-size:13px;font-weight:600;cursor:pointer}.rng button.on{background:var(--pink);color:#fff;border-color:var(--pink)}
+.cs{overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.cg{display:flex;gap:2px}
+.col{flex:1 0 var(--w);display:flex;flex-direction:column;align-items:center;cursor:pointer;border-radius:8px;-webkit-tap-highlight-color:transparent}
+.col:hover,.col.sel{background:rgba(255,255,255,.08)}
+.cnt{height:16px;font-size:11px;font-weight:700;line-height:16px}
+.bw{height:130px;width:100%;display:flex;align-items:flex-end;justify-content:center;border-bottom:1px solid var(--line)}
+.bar{width:62%;max-width:26px;display:flex;flex-direction:column-reverse;border-radius:5px 5px 0 0;overflow:hidden}
+.bar.z{height:2px;background:rgba(255,255,255,.16);border-radius:0}
+.sg0,.sg1{display:block;min-height:0}.sg0{background:linear-gradient(180deg,#ff7aae,#fa5a9b)}.sg1{background:linear-gradient(180deg,#6cc0ff,#3b8dff)}
+.lb{height:18px;font-size:10px;color:var(--dim);line-height:18px;white-space:nowrap}
+.cd{min-height:22px;margin:10px 0 0;font-size:13px;color:var(--dim)}.cd b{color:var(--tx)}
+.lgd{display:flex;gap:14px;font-size:12px;color:var(--dim);margin-top:6px;flex-wrap:wrap}.lgd i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.cst{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:12px}.cst div{background:rgba(255,255,255,.05);border-radius:10px;padding:8px 10px}.cst small{display:block;color:var(--dim);font-size:11px}.cst b{font-size:16px}
+@media(max-width:560px){.hm{display:none}td,th{padding:8px 5px}}
+</style></head><body>
+<div class="w">
+<nav><button class="mb" id="mb" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6.5h16M4 12h16M4 17.5h16"/></svg><i class="dot"></i></button>
+<a class="lg" href="index.html"><img src="assets/logo.png" alt="">Osui!</a><button class="langbtn" type="button">EN</button></nav>
+<main id="app"><section data-i="loading">Đang tải…</section></main>
+</div>
+<script src="i18n.js"></script>
+<script src="firebase-config.js"></script>
+<script src="menu.js"></script>
+<script type="module">
+import {S,t,$,esc,loc,num,ago,av,AVRE,emsg,ERR,sec,init,watch,notCfg,NAME_RE} from './common.js';
+I18N.apply();
+if(!await init({fs:true}).catch(e=>{console.error(e);return false}))notCfg();
+else{
+const {fs,au,A,D}=S;
+const app=$('app');
+let FR=null,TOK=0;
+const mods=a=>(a&&a.length?a.map(m=>'<span class="mod">'+esc(m)+'</span>').join(''):'<span class="dim">—</span>');
+const mapName=r=>'<div class="ti">'+esc(r.title)+(r.cv?' <span class="mod">conv</span>':'')+'</div><div class="ar">'+esc(r.artist)+' · ['+esc(r.ver)+'] · '+num(r.sr,2)+'★</div>';
+const canFriend=()=>S.CU&&S.CU.emailVerified&&S.PROF;
+const badge=()=>{if(window.OSUI_MENU)OSUI_MENU.set({badge:FR&&FR.inc?FR.inc.length:0})};
+
+// ---- bạn bè: tải 3 danh sách (bạn, lời mời đến, lời mời đã gửi) ----
+async function loadFriends(){FR={friends:[],inc:[],out:[]};if(!canFriend())return FR;const CU=S.CU;
+ try{const[a,b,c]=await Promise.all([fs.getDocs(fs.query(fs.collection(D,'friends'),fs.where('members','array-contains',CU.uid))),fs.getDocs(fs.query(fs.collection(D,'friendReqs'),fs.where('to','==',CU.uid))),fs.getDocs(fs.query(fs.collection(D,'friendReqs'),fs.where('from','==',CU.uid)))]);
+  a.forEach(d=>{const x=d.data(),me=x.a===CU.uid;FR.friends.push({id:d.id,uid:me?x.b:x.a,name:me?x.bName:x.aName,since:x.since})});
+  b.forEach(d=>{const x=d.data();FR.inc.push({id:d.id,uid:x.from,name:x.fromName,t:x.t})});
+  c.forEach(d=>{const x=d.data();FR.out.push({id:d.id,uid:x.to,name:x.toName,t:x.t})});
+  FR.friends.sort((p,q)=>String(p.name).localeCompare(String(q.name)));FR.inc.sort((p,q)=>q.t-p.t);FR.out.sort((p,q)=>q.t-p.t)}catch(e){FR.err=e}
+ badge();return FR}
+const relOf=uid=>{if(!FR||!S.CU)return'';if(uid===S.CU.uid)return'self';if(FR.friends.some(f=>f.uid===uid))return'friend';if(FR.inc.some(f=>f.uid===uid))return'incoming';if(FR.out.some(f=>f.uid===uid))return'sent';return'none'};
+async function sendReq(uid,name){const CU=S.CU;if(!canFriend())throw new Error(t(CU?'fNeedVerify':'fNeedLogin'));if(uid===CU.uid)throw new Error(t('fSelfErr'));
+ await loadFriends();const r=relOf(uid);if(r==='friend')throw new Error(t('fAlready'));if(r==='sent')throw new Error(t('fAlreadySent'));
+ if(r==='incoming'){await acceptReq(FR.inc.find(f=>f.uid===uid));return'accepted'}
+ await fs.setDoc(fs.doc(D,'friendReqs',CU.uid+'_'+uid),{from:CU.uid,fromName:S.PROF.name,to:uid,toName:name,t:Date.now()});return'sent'}
+async function acceptReq(r){const b=fs.writeBatch(D);b.set(fs.doc(D,'friends',r.id),{a:r.uid,b:S.CU.uid,aName:r.name,bName:S.PROF.name,members:[r.uid,S.CU.uid],since:Date.now()});b.delete(fs.doc(D,'friendReqs',r.id));await b.commit()}
+const delReq=id=>fs.deleteDoc(fs.doc(D,'friendReqs',id));
+const delFriend=id=>fs.deleteDoc(fs.doc(D,'friends',id));
+
+// ---- Ảnh đại diện: cắt vuông + thu nhỏ ----
+function fileToAvatar(file){return new Promise((res,rej)=>{if(!file||!/^image\//.test(file.type))return rej(new Error(t('avBadFile')));if(file.size>10*1024*1024)return rej(new Error(t('avTooBig')));
+ const url=URL.createObjectURL(file),im=new Image();im.onload=()=>{try{const Sz=Math.min(im.naturalWidth,im.naturalHeight),sx=(im.naturalWidth-Sz)/2,sy=(im.naturalHeight-Sz)/2;
+  for(const[px,q]of[[160,.85],[160,.7],[128,.7],[96,.65]]){const c=document.createElement('canvas');c.width=c.height=px;const x=c.getContext('2d');x.fillStyle='#1c1438';x.fillRect(0,0,px,px);x.imageSmoothingQuality='high';x.drawImage(im,sx,sy,Sz,Sz,0,0,px,px);const d=c.toDataURL('image/jpeg',q);if(d.length<=45000){URL.revokeObjectURL(url);return res(d)}}
+  URL.revokeObjectURL(url);rej(new Error(t('avTooBig')))}catch(e){rej(e)}};im.onerror=()=>{URL.revokeObjectURL(url);rej(new Error(t('avBadFile')))};im.src=url})}
+async function setAvatar(v){await fs.updateDoc(fs.doc(D,'users',S.CU.uid),{avatar:v});S.PROF.avatar=v}
+
+// ---- Lịch sử chơi (dùng chung cho biểu đồ và bảng) ----
+const PLAYS_MAX=1000,PC={};
+async function getPlays(uid){const c=PC[uid];if(c&&Date.now()-c.t<60000)return c.a;
+ const s=await fs.getDocs(fs.query(fs.collection(D,'plays'),fs.where('uid','==',uid),fs.orderBy('date','desc'),fs.limit(PLAYS_MAX))),a=[];s.forEach(d=>a.push(d.data()));PC[uid]={t:Date.now(),a};return a}
+
+// ---- Biểu đồ cột: mỗi cột = 1 ngày, chiều cao = số lần chơi (hồng = osu!, xanh = mania) ----
+let RANGE=30;
+const pad=n=>String(n).padStart(2,'0');
+const dkey=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const dlong=d=>d.toLocaleDateString(loc(),{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
+function drawChart(plays){const box=$('cbox');if(!box)return;
+ const N=RANGE,now=new Date(),days=[],idx={};
+ for(let i=N-1;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i),o={d,c:[0,0]};days.push(o);idx[dkey(d)]=o}
+ for(const p of plays){const o=idx[dkey(new Date(p.date))];if(o)o.c[p.mode===1?1:0]++}
+ const sum=o=>o.c[0]+o.c[1],tot=days.reduce((a,o)=>a+sum(o),0),played=days.filter(o=>sum(o)>0).length,best=days.reduce((a,o)=>sum(o)>sum(a)?o:a,days[0]);
+ const max=Math.max(1,...days.map(sum)),W=N<=7?44:N<=30?30:18,step=N<=30?1:3;
+ const capped=plays.length>=PLAYS_MAX&&new Date(plays[plays.length-1].date).getTime()>days[0].d.getTime();
+ box.innerHTML='<div class="cst"><div><small>'+t('totPlays')+'</small><b>'+num(tot)+'</b></div><div><small>'+t('daysPlayed')+'</small><b>'+num(played)+'</b></div><div><small>'+t('bestDay')+'</small><b>'+(sum(best)?pad(best.d.getDate())+'/'+pad(best.d.getMonth()+1)+' · '+num(sum(best)):'—')+'</b></div></div>'
+  +(tot?'':'<p class="dim" style="margin:0 0 8px">'+t('noPlayRange')+'</p>')
+  +'<div class="cs" id="cs"><div class="cg" style="min-width:'+(N*(W+2))+'px;--w:'+W+'px">'
+  +days.map((o,i)=>{const s=sum(o),h=s?Math.max(6,Math.round(s/max*130)):0;
+   return'<div class="col" data-x="'+i+'" title="'+esc(dlong(o.d)+': '+t('nPlays',{n:s}))+'"><span class="cnt">'+(s||'')+'</span><div class="bw">'+(s?'<div class="bar" style="height:'+h+'px">'+(o.c[0]?'<i class="sg0" style="flex:'+o.c[0]+'"></i>':'')+(o.c[1]?'<i class="sg1" style="flex:'+o.c[1]+'"></i>':'')+'</div>':'<div class="bar z"></div>')+'</div><span class="lb">'+(((N-1-i)%step===0)?pad(o.d.getDate())+'/'+pad(o.d.getMonth()+1):'')+'</span></div>'}).join('')
+  +'</div></div><div class="cd" id="cd">'+t('tapBar')+'</div><div class="lgd"><span><i class="sg0"></i>'+t('osu')+'</span><span><i class="sg1"></i>'+t('mania')+'</span></div>'
+  +(capped?'<p class="hint">'+t('chartCap',{n:PLAYS_MAX})+'</p>':'');
+ const cd=$('cd');
+ box.querySelectorAll('.col').forEach(c=>c.onclick=()=>{box.querySelectorAll('.col.sel').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');const o=days[+c.dataset.x],s=sum(o);
+  cd.innerHTML='<b>'+esc(dlong(o.d))+'</b> — '+t('nPlays',{n:s})+(s?' ('+t('osu')+': '+o.c[0]+' · '+t('mania')+': '+o.c[1]+')':'')});
+ const cs=$('cs');if(cs)cs.scrollLeft=cs.scrollWidth} // cuộn tới ngày mới nhất
+
+// ---- Hồ sơ ----
+async function profile(uid,mode,tabN){const tok=++TOK;mode=mode==='mania'?'mania':'std';tabN=tabN==='h'?'h':'r';
+ sec(t('loading'));let u;try{const s=await fs.getDoc(fs.doc(D,'users',uid));if(!s.exists())return sec('<h1>'+t('notFound')+'</h1>');u=s.data()}catch(e){return sec('<p class="msg er">'+ERR(e)+'</p>')}
+ if(tok!==TOK)return;
+ const CU=S.CU,own=!!(CU&&uid===CU.uid),base='#'+(own?'me':'u/'+uid),m=mode==='mania'?1:0;
+ if(!own&&canFriend()&&!FR)await loadFriends();
+ if(tok!==TOK)return;
+ sec('<div class="phead">'+av(u,84)+'<div class="grow"><h1>'+esc(u.name)+(own&&!CU.emailVerified?' <span class="mod" style="font-size:12px">'+t('verifyBadge')+'</span>':'')+'</h1><div class="acts" id="pa"></div><div class="msg" id="pm"></div></div></div>'
+  +'<div class="stats"><div class="stat"><small>'+t('ppStd')+'</small><b>'+num(u.pp_std,2)+'</b></div><div class="stat"><small>'+t('ppMania')+'</small><b>'+num(u.pp_mania,2)+'</b></div><div class="stat"><small>'+t('playCount')+'</small><b>'+num(u.plays)+'</b></div></div>'
+  +'<div class="cw"><div class="chh"><h2>'+t('dayH')+'</h2><div class="rng">'+[7,30,90].map(n=>'<button data-r="'+n+'" class="'+(RANGE===n?'on':'')+'">'+t('r'+n)+'</button>').join('')+'</div></div><div id="cbox">'+t('loading')+'</div></div>'
+  +'<div class="tab"><button data-m="std" class="'+(mode==='std'?'on':'')+'">'+t('osu')+'</button><button data-m="mania" class="'+(mode==='mania'?'on':'')+'">'+t('mania')+'</button><span style="flex:1"></span><button data-t="r" class="'+(tabN==='r'?'on':'')+'">'+t('records')+'</button><button data-t="h" class="'+(tabN==='h'?'on':'')+'">'+t('history')+'</button></div><div id="pb" class="sc">'+t('loading')+'</div>');
+ const pm=(x,ok)=>{$('pm').className='msg '+(ok?'ok':'er');$('pm').textContent=x||''};
+ const pa=$('pa');
+ if(own){pa.innerHTML='<label class="btn sm p" for="avf">'+t('changeAv')+'</label><input id="avf" type="file" accept="image/*">'+(u.avatar?'<button class="btn sm dg" id="avx">'+t('removeAv')+'</button>':'')+'<button class="btn sm dg" id="lo">'+t('logout')+'</button>';
+  const hint=document.createElement('p');hint.className='hint';hint.textContent=CU.emailVerified?t('avHint'):t('avNeedVerify');pa.parentNode.appendChild(hint);
+  $('lo').onclick=()=>au.signOut(A);
+  $('avf').onchange=async ev=>{const f=ev.target.files&&ev.target.files[0];ev.target.value='';if(!f)return;if(!CU.emailVerified)return pm(t('avNeedVerify'));
+   try{pm(t('avSaving'),1);const d=await fileToAvatar(f);await setAvatar(d);profile(uid,mode,tabN);setTimeout(()=>{const e=$('pm');if(e){e.className='msg ok';e.textContent=t('avSaved')}},0)}
+   catch(e){pm((e&&e.code==='permission-denied')?t('avRules'):(e&&e.code?t('avFail'):'')+(e&&e.message?e.message:''))}};
+  if($('avx'))$('avx').onclick=async()=>{try{await setAvatar('');profile(uid,mode,tabN)}catch(e){pm(emsg(e))}}}
+ else if(canFriend()&&FR){const r=relOf(uid),lab={none:t('fAdd'),sent:t('fSent'),incoming:t('fAcceptBtn'),friend:t('fFriends')}[r];
+  pa.innerHTML='<button class="btn sm '+(r==='none'||r==='incoming'?'p':'')+'" id="fb"'+(r==='sent'?' disabled':'')+'>'+lab+'</button>'+(r==='friend'?'<button class="btn sm dg" id="fx">'+t('unfriend')+'</button>':'');
+  const redo=()=>profile(uid,mode,tabN);
+  if($('fb'))$('fb').onclick=async()=>{if(r!=='none'&&r!=='incoming')return;try{const x=await sendReq(uid,u.name);await loadFriends();await redo();setTimeout(()=>{const e=$('pm');if(e){e.className='msg ok';e.textContent=x==='accepted'?t('fAcceptOk',{name:u.name}):t('fSentOk',{name:u.name})}},0)}catch(e){pm(emsg(e))}};
+  if($('fx'))$('fx').onclick=async()=>{if(!confirm(t('confirmUnf',{name:u.name})))return;try{await delFriend(FR.friends.find(f=>f.uid===uid).id);await loadFriends();redo()}catch(e){pm(emsg(e))}}}
+ const go=(mo,tt)=>{location.hash=base+'/'+mo+'/'+tt};
+ app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>go(b.dataset.m,tabN));app.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>go(mode,b.dataset.t));
+ // lịch sử chơi: tải 1 lần, dùng cho biểu đồ + bảng "Lịch sử chơi"
+ let plays=null,perr=null;const pp=getPlays(uid).then(a=>{plays=a}).catch(e=>{perr=e});
+ app.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{RANGE=+b.dataset.r;app.querySelectorAll('[data-r]').forEach(x=>x.classList.toggle('on',x===b));if(plays)drawChart(plays)});
+ pp.then(()=>{if(tok!==TOK)return;if(perr){const b=$('cbox');if(b)b.innerHTML='<p class="msg er">'+ERR(perr)+'</p>'}else drawChart(plays)});
+ try{
+  if(tabN==='r'){const s=await fs.getDocs(fs.query(fs.collection(D,'scores'),fs.where('uid','==',uid),fs.where('mode','==',m),fs.orderBy('pp','desc'),fs.limit(100))),a=[];s.forEach(d=>a.push(d.data()));
+   if(tok!==TOK)return;
+   $('pb').innerHTML=a.length?'<table><tr><th>#</th><th>'+t('map')+'</th><th class="num">'+t('score')+'</th><th class="num hm">'+t('acc')+'</th><th class="hm">'+t('rank')+'</th><th class="hm">'+t('mod')+'</th><th class="num">'+t('pp')+'</th><th class="num hm">'+t('counted')+'</th></tr>'+a.map((r,i)=>'<tr><td>'+(i+1)+'</td><td>'+mapName(r)+'<div class="ar">'+ago(r.date)+'</div></td><td class="num">'+num(r.score)+'</td><td class="num hm">'+num(r.acc*100,2)+'%</td><td class="hm"><span class="rkc '+esc(r.rk)+'">'+esc(r.rk)+'</span></td><td class="hm">'+mods(r.mods)+'</td><td class="num"><b>'+num(r.pp,2)+'</b></td><td class="num hm dim">'+num(r.pp*Math.pow(.95,i),2)+'</td></tr>').join('')+'</table>':'<p class="dim">'+t('noRec')+'</p>'}
+  else{await pp;if(tok!==TOK)return;if(perr)throw perr;const a=plays.filter(x=>x.mode===m).slice(0,100);
+   $('pb').innerHTML=a.length?'<table><tr><th>'+t('time')+'</th><th>'+t('map')+'</th><th class="num">'+t('score')+'</th><th class="num hm">'+t('acc')+'</th><th class="hm">'+t('rank')+'</th><th class="hm">'+t('mod')+'</th><th class="num">'+t('pp')+'</th></tr>'+a.map(r=>'<tr><td class="dim" style="white-space:nowrap">'+ago(r.date)+'</td><td>'+mapName(r)+'</td><td class="num">'+num(r.score)+'</td><td class="num hm">'+num(r.acc*100,2)+'%</td><td class="hm"><span class="rkc '+esc(r.rk)+'">'+esc(r.rk)+'</span></td><td class="hm">'+mods(r.mods)+'</td><td class="num"><b>'+num(r.pp,2)+'</b></td></tr>').join('')+'</table>':'<p class="dim">'+t('noPlay')+'</p>'}}
+ catch(e){const b=$('pb');if(b)b.innerHTML='<p class="msg er">'+ERR(e)+'</p>'}}
+
+// ---- Bạn bè ----
+async function friendsView(){TOK++;
+ sec('<h1>'+t('friendsH')+'</h1><div>'+t('loading')+'</div>');await loadFriends();
+ if(FR.err){return sec('<h1>'+t('friendsH')+'</h1><p class="msg er">'+(FR.err.code==='permission-denied'?t('fRules'):ERR(FR.err))+'</p>')}
+ const row=(x,btns,sub)=>'<div class="row2"><span data-u="'+esc(x.uid)+'" class="nm" style="display:flex;align-items:center;gap:10px"><span id="av_'+esc(x.uid)+'">'+av({name:x.name},38)+'</span><span style="min-width:0"><span class="nmt">'+esc(x.name)+'</span>'+(sub?'<small>'+sub+'</small>':'')+'</span></span>'+btns+'</div>';
+ sec('<h1>'+t('friendsH')+'</h1><div class="fgrp" style="margin-top:0"><h2>'+t('addFriendH')+'</h2><form class="addf" id="af" style="margin:0"><input id="an" maxlength="16" autocapitalize="off" autocomplete="off" placeholder="'+esc(t('addFriendPh'))+'"><button class="btn p" id="ab" style="white-space:nowrap">'+t('addFriendBtn')+'</button></form><div class="msg" id="fm"></div></div>'
+  +'<div class="fgrp"><h2>'+t('reqIn')+(FR.inc.length?'<span class="bdg">'+FR.inc.length+'</span>':'')+'</h2>'+(FR.inc.length?FR.inc.map(r=>row(r,'<button class="btn sm p" data-ac="'+esc(r.id)+'">'+t('accept')+'</button><button class="btn sm" data-dc="'+esc(r.id)+'">'+t('decline')+'</button>')).join(''):'<p class="dim" style="margin:6px 0">'+t('noReqIn')+'</p>')+'</div>'
+  +'<div class="fgrp"><h2>'+t('reqOut')+'</h2>'+(FR.out.length?FR.out.map(r=>row(r,'<button class="btn sm" data-dc="'+esc(r.id)+'">'+t('cancel')+'</button>')).join(''):'<p class="dim" style="margin:6px 0">'+t('noReqOut')+'</p>')+'</div>'
+  +'<div class="fgrp"><h2>'+t('myFriends')+' ('+FR.friends.length+')</h2>'+(FR.friends.length?FR.friends.map(f=>row(f,'<button class="btn sm dg" data-uf="'+esc(f.id)+'" data-n="'+esc(f.name)+'">'+t('unfriend')+'</button>',t('since')+' '+new Date(f.since).toLocaleDateString(loc()))).join(''):'<p class="dim" style="margin:6px 0">'+t('noFriends')+'</p>')+'</div>');
+ const fm=(x,ok)=>{const e=$('fm');if(e){e.className='msg '+(ok?'ok':'er');e.textContent=x||''}};
+ app.querySelectorAll('[data-u]').forEach(e=>e.onclick=()=>{location.hash='#u/'+e.dataset.u});
+ [...new Set([...FR.friends,...FR.inc,...FR.out].map(x=>x.uid))].forEach(async id=>{try{const s=await fs.getDoc(fs.doc(D,'users',id));if(s.exists()){const e=$('av_'+id);if(e)e.innerHTML=av(s.data(),38)}}catch(_){}});
+ const redo=async()=>{await loadFriends();friendsView()};
+ app.querySelectorAll('[data-ac]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{const r=FR.inc.find(x=>x.id===b.dataset.ac);await acceptReq(r);await friendsView();fm(t('fAcceptOk',{name:r.name}),1)}catch(e){fm(emsg(e));b.disabled=false}});
+ app.querySelectorAll('[data-dc]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await delReq(b.dataset.dc);await redo()}catch(e){fm(emsg(e));b.disabled=false}});
+ app.querySelectorAll('[data-uf]').forEach(b=>b.onclick=async()=>{if(!confirm(t('confirmUnf',{name:b.dataset.n})))return;b.disabled=true;try{await delFriend(b.dataset.uf);await redo()}catch(e){fm(emsg(e));b.disabled=false}});
+ $('af').onsubmit=async ev=>{ev.preventDefault();const n=$('an').value.trim();if(!n)return;$('ab').disabled=true;fm('…',1);
+  try{if(!NAME_RE.test(n))throw new Error(t('fNotFound',{name:n}));const us=await fs.getDoc(fs.doc(D,'usernames',n.toLowerCase()));if(!us.exists())throw new Error(t('fNotFound',{name:n}));
+   const uid=us.data().uid,ps=await fs.getDoc(fs.doc(D,'users',uid));if(!ps.exists())throw new Error(t('fNotFound',{name:n}));const name=ps.data().name;
+   const x=await sendReq(uid,name);await friendsView();fm(x==='accepted'?t('fAcceptOk',{name}):t('fSentOk',{name}),1)}
+  catch(e){fm(emsg(e));$('ab').disabled=false}}}
+
+// ---- Điều hướng: #me, #u/<uid>, #friends (+ /std|mania/r|h) ----
+function route(){const CU=S.CU,p=(location.hash||'#me').slice(1).split('/');
+ const needLogin=()=>{location.replace('login.html#in')};
+ if(p[0]==='friends'){if(!CU)return needLogin();if(!CU.emailVerified)return location.replace('login.html#in');return friendsView()}
+ if(p[0]==='u'&&p[1]){if(CU&&p[1]===CU.uid){location.replace('#me');return}return profile(p[1],p[2],p[3])}
+ if(!CU)return needLogin();if(!CU.emailVerified)return location.replace('login.html#in');
+ return profile(CU.uid,p[1],p[2])}
+addEventListener('hashchange',route);
+I18N.onChange(route);
+watch(async()=>{FR=null;if(canFriend())await loadFriends();route()});
+}
+</script></body></html>
